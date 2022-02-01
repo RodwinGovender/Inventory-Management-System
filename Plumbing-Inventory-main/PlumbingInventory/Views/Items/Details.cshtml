@@ -1,0 +1,159 @@
+﻿@model PlumbingInventory.Models.Item
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+@using (Html.BeginForm("Details", "Items", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    @Html.AntiForgeryToken()
+<div>
+    @Html.HiddenFor(x => x.Image)
+
+    @Html.HiddenFor(x => x.ItemCat_ID)
+
+    @Html.HiddenFor(x => x.Item_ID)
+    @Html.HiddenFor(x => x.Item_Name)
+    @Html.HiddenFor(x => x.Item_Qty)
+
+    <table class="model-state">
+        @foreach (var item in ViewContext.ViewData.ModelState)
+        {
+            if (item.Value.Errors.Any())
+            {
+                <tr>
+                    <td><b>@item.Key</b></td>
+                    <td>@((item.Value == null || item.Value.Value == null) ? "<null>" : item.Value.Value.RawValue)</td>
+                    <td>@(string.Join("; ", item.Value.Errors.Select(x => x.ErrorMessage)))</td>
+                </tr>
+            }
+        }
+    </table>
+
+    <style>
+        table.model-state {
+            border-color: #600;
+            border-width: 0 0 1px 1px;
+            border-style: solid;
+            border-collapse: collapse;
+            font-size: .8em;
+            font-family: arial;
+        }
+
+            table.model-state td {
+                border-color: #600;
+                border-width: 1px 1px 0 0;
+                border-style: solid;
+                margin: 0;
+                padding: .25em .75em;
+                background-color: #FFC;
+            }
+    </style>
+
+    <h4>Item</h4>
+    <hr />
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="card border-secondary mb-3" style="max-width: 20rem;">
+                <div class="card-header">Item Page</div>
+                <div class="card-body">
+                    @if (Model.Image != null)
+                    {
+                        var base64 = Convert.ToBase64String(Model.Image);
+                        var ImgSource = string.Format("data:image/gif;base64,{0}", base64);
+                        <img src="@ImgSource" alt="Card image" width="100%" height="200px" />
+                    }
+                    else
+                    {
+
+                        <img src="~/Image/noImage.jpg" alt="Card image" width="100%" height="200px" />
+
+                    }
+                </div>
+            </div>
+
+
+          
+        </div>
+        <div class="col-md-6">
+            <div class="card border-secondary mb-3" style="max-width: 20rem;">
+                <div class="card-header">Item Details</div>
+                <div class="card-body">
+                    <dl class="dl-horizontal">
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.ItemCat.ItemCat_Name)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.ItemCat.ItemCat_Name)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Item_Name)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Item_Name)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Item_Qty)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Item_Qty)
+                        </dd>
+                    </dl>
+
+                    <br />
+
+                    <dl class="dl-horizontal">
+                        <dt>
+                            Assign To Job
+                        </dt>
+
+                        <dd>
+                            @Html.DropDownList("Item_Job_ID", null, htmlAttributes: new { @class = "form-control" })
+                        </dd>
+
+                        <dt>
+                            Quantity Used
+                        </dt>
+
+                        <dd>
+                            @Html.EditorFor(model => model.Item_QtyUsed, new { htmlAttributes = new { @class = "form-control", min = 1, max = Model.Item_Qty } })
+                        </dd>
+                    </dl>
+
+                    <br />
+                    <center>
+                        <input type="submit" value="Add To Job" class="btn btn-primary" />
+                    </center>
+                </div>
+            </div>
+
+
+        </div>
+
+        </div>
+
+
+    </div>
+
+
+    @*@Html.EditorFor(model => model.Item_QtyUsed, new { htmlAttributes = new { @class = "form-control" } })*@
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+
+        </div>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Item_ID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+    }

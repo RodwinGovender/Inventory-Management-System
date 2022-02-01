@@ -1,0 +1,80 @@
+﻿@model IEnumerable<PlumbingInventory.Models.Item>
+
+@{
+    ViewBag.Title = "CatalogList";
+}
+@using (Html.BeginForm("CatalogList", "Items", FormMethod.Get))
+{
+    <h2>Item Catalog (In-Stock)</h2>
+    <hr />
+    <div class="row">
+        <div class="col">
+            <b> Select Item Category:   @Html.DropDownList("ItemCat_ID", null, htmlAttributes: new { @class = "custom-select" })</b>
+        </div>
+        <div class="col">
+            <b>Enter Item Name: </b>  @Html.TextBox("search")
+            <input type="submit" name="submit" value="Search" />
+        </div>
+    </div>
+
+    <br />
+    <hr />
+
+    <a href='@Url.Action("Index", "Jobs", null)' class="btn btn-primary">View All Jobs</a> 
+<a href='@Url.Action("Index", "Items", null)' class="btn btn-primary">View Inventory</a>
+
+<hr />
+
+
+<div class="row">
+
+
+
+
+
+
+
+    @foreach (var item in Model)
+    {
+
+        <div class="col-md-3">
+            <div class="card mb-3">
+                <h3 class="card-header">@item.Item_Name</h3>
+
+                @if (item.Image != null)
+                {
+                    var base64 = Convert.ToBase64String(item.Image);
+                    var ImgSource = string.Format("data:image/gif;base64,{0}", base64);
+                    <img src="@ImgSource" alt="Card image" width="100%" height="200px" />
+                }
+                else
+                {
+
+                    <img src="~/Image/noImage.jpg" alt="Card image" width="100%" height="200px" />
+
+                }
+
+                <div class="card-body">
+                    <center>
+                        <h3>Price: R @String.Format("{0:N2}", item.Item_Price)</h3>
+
+                        <br />
+
+                        <a href='@Url.Action("Details", "Items", new { id = item.Item_ID }, null)' class="btn btn-primary">Add Item To Job</a>
+
+
+                    </center>
+
+
+
+
+                </div>
+                <div class="card-footer text-muted">
+                    Quantity: @item.Item_Qty
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+}

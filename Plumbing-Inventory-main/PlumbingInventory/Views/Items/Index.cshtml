@@ -1,0 +1,92 @@
+﻿@model IEnumerable<PlumbingInventory.Models.Item>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<h2>Inventory</h2>
+
+<hr />
+
+
+@using (Html.BeginForm("Index", "Items", FormMethod.Get))
+{
+    <div class="row">
+        <div class="col">
+            <b> Select Item Category:   @Html.DropDownList("ItemCat_ID", null, htmlAttributes: new { @class = "custom-select" })</b>
+        </div>
+        <div class="col">
+            <b>Enter Item Name: </b>  @Html.TextBox("search")
+            <input type="submit" name="submit" value="Search" />
+        </div>
+    </div>
+}
+<br />
+<hr />
+<p>
+    <a href='@Url.Action("Create", "Items", null)' class="btn btn-primary">Add New Item</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            Item Image
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ItemCat.ItemCat_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item_Qty)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Item_Price)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+
+                @if (item.Image != null)
+                {
+                    var base64 = Convert.ToBase64String(item.Image);
+                    var ImgSource = string.Format("data:image/gif;base64,{0}", base64);
+                    <img src="@ImgSource" alt="Card image" width="100" height="100" />
+                }
+                else
+                {
+
+                    <img src="~/Image/noImage.jpg" alt="Card image" width="100" height="100" />
+
+                }
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemCat.ItemCat_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item_Qty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item_Price)
+            </td>
+            <td>
+              
+                <a href='@Url.Action("Edit", "Items", new { id = item.Item_ID }, null)' class="btn btn-primary">Edit Item</a>
+
+            </td>
+        </tr>
+    }
+
+</table>

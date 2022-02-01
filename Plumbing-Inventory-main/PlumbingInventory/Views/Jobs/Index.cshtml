@@ -1,0 +1,59 @@
+﻿@model IEnumerable<PlumbingInventory.Models.Job>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Job List</h2>
+
+@using (Html.BeginForm("Index", "Jobs", FormMethod.Get))
+{
+    <div class="row">
+        <div class="col">
+            <b> Select Job Status:   @Html.DropDownList("Job_Status", null, htmlAttributes: new { @class = "custom-select" })</b>
+        </div>
+        <div class="col">
+            <b>Enter Job Name: </b>  @Html.TextBox("search")
+            <input type="submit" name="submit" value="Search" />
+        </div>
+    </div>
+}
+<br />
+<hr />
+<p>
+    <a href='@Url.Action("Create", "Jobs", null)' class="btn btn-primary">New Job</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Job_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Job_Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Job_Status)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Job_Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Job_Date)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Job_Status)
+    </td>
+    <td>
+        <a href='@Url.Action("JobInfo", "Jobs", new { id = item.Job_ID }, null)' class="btn btn-primary">View Job</a>
+    </td>
+</tr>
+    }
+
+</table>

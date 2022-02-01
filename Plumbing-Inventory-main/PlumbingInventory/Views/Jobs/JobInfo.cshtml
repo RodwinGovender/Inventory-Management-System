@@ -1,0 +1,163 @@
+﻿
+@model PlumbingInventory.Models.JobVM
+@using PlumbingInventory.Models;
+
+@{
+    ViewBag.Title = "JobInfo";
+
+
+    float? totalcost = (float)0.00;
+    int totalitems = 0;
+
+    foreach (var item in Model.ItemRecords)
+    {
+        totalitems += item.ItemRecord_QtyUsed;
+        totalcost += item.ItemRecord_QtyUsed * item.Item.Item_Price;
+    }
+}
+<div class="row">
+
+    <div class="col">
+        <div class="card border-secondary mb-3" style="max-width: 20rem;">
+            <div class="card-header">Job Details</div>
+            <div class="card-body">
+
+                <b>Job Name:</b> @Model.Job_Names
+                <br />
+
+
+                <b>Job Date:</b> @Model.Job_Dates
+                <br />
+
+
+                <b>Job Status:</b> @Model.Job_Statuss
+                <br />
+                <br />
+                @if (Model.Job_Statuss == "Complete")
+                {
+                    <a href='@Url.Action("UpdateStatus", "Jobs", new { id = Model.Job_IDs }, null)' class="btn btn-primary">Set Status as Incomplete</a>
+                }
+                else
+                {
+
+                    <a href='@Url.Action("UpdateStatus", "Jobs", new { id = Model.Job_IDs }, null)' class="btn btn-danger">Set Status as Complete</a>
+                }
+
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col">
+        <div class="card border-secondary mb-3" style="max-width: 20rem;">
+            <div class="card-header">Item Details</div>
+            <div class="card-body">
+
+                <b>Total Number of Items:</b> @totalitems
+                <br />
+
+
+                <b>Total Job Cost:</b>  @String.Format("R{0:N2}", totalcost)
+                <br />
+                <br />
+                @if (Model.Job_Statuss != "Complete") { 
+                <a href='@Url.Action("CatalogList", "Items", null)' class="btn btn-primary">Add New Items</a>}
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<hr />
+
+<a href='@Url.Action("Index", "Jobs", null)' class="btn btn-primary">View All Jobs</a> | 
+<a href='@Url.Action("Create", "Jobs", null)' class="btn btn-primary">New Job</a>
+
+<hr />
+<h3>Assigned Items To Job</h3>
+<table class="table">
+    <tr>
+        <th>
+            Item Image
+        </th>
+        <th>
+            Category
+        </th>
+        <th>
+            Item Name
+        </th>
+        <th>
+            Quantity Used
+        </th>
+        <th>
+            Total Quantity Remaining
+        </th>
+        <th>
+            Cost Per Unit
+        </th>
+        <th>
+            Total Cost
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.ItemRecords)
+    {
+        <tr>
+
+            <td>
+
+                @if (item.Item.Image != null)
+                {
+                    var base64 = Convert.ToBase64String(item.Item.Image);
+                    var ImgSource = string.Format("data:image/gif;base64,{0}", base64);
+                    <img src="@ImgSource" alt="Card image" width="100" height="100" />
+                }
+                else
+                {
+
+                    <img src="~/Image/noImage.jpg" alt="Card image" width="100" height="100" />
+
+                }
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item.ItemCat.ItemCat_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item.Item_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemRecord_QtyUsed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item.Item_Qty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item.Item_Price)
+            </td>
+            <td>
+                @{
+                    float? total = item.Item.Item_Price * item.ItemRecord_QtyUsed;
+                    totalcost += total;
+
+                }
+                @String.Format("R{0:N2}", total)
+
+            </td>
+
+            <td>
+                @if (Model.Job_Statuss != "Complete")
+                {
+                    <a href='@Url.Action("EditQuantity", "Items", new { id = item.ItemRecord_ID }, null)' class="btn btn-primary">Edit Quantity</a>
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+

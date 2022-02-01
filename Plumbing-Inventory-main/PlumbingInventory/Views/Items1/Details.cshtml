@@ -1,0 +1,66 @@
+﻿@model PlumbingInventory.Models.Item
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Item</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemCat.ItemCat_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ItemCat.ItemCat_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Item_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Item_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Item_Qty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Item_Qty)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Item_QtyUsed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Item_QtyUsed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Image)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Item_Job_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Item_Job_ID)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Item_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
